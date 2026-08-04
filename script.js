@@ -7,7 +7,7 @@ const restartBtn = document.getElementById("restartBtn");
 
 let score = 0;
 let level = 1;
-
+let aimAngle = 0;
 const shooter = {
     x: canvas.width / 2,
     y: canvas.height - 40,
@@ -33,6 +33,25 @@ function drawShooter() {
     ctx.closePath();
 }
 
+
+function drawAimLine() {
+
+    const length = 120;
+
+    ctx.beginPath();
+    ctx.moveTo(shooter.x, shooter.y);
+
+    ctx.lineTo(
+        shooter.x + Math.cos(aimAngle) * length,
+        shooter.y + Math.sin(aimAngle) * length
+    );
+
+    ctx.strokeStyle = "#ffffff";
+    ctx.lineWidth = 2;
+    ctx.stroke();
+}
+
+
 function gameLoop() {
     drawBackground();
     drawGrid();
@@ -45,6 +64,8 @@ function gameLoop() {
 restartBtn.addEventListener("click", () => {
     score = 0;
     level = 1;
+    createGrid();
+    currentBubble = createBubble();
     updateUI();
 });
 
@@ -52,11 +73,6 @@ updateUI();
 createGrid();
 gameLoop();
 const colors = [
-const ROWS = 6;
-const COLS = 8;
-const SIZE = 32;
-
-const bubbleGrid = [];
     "#ff3b30",
     "#34c759",
     "#007aff",
@@ -64,7 +80,12 @@ const bubbleGrid = [];
     "#af52de",
     "#ff9500"
 ];
+const ROWS = 6;
+const COLS = 8;
+const SIZE = 32;
 
+const bubbleGrid = [];
+    
 let currentBubble = createBubble();
 
 function createBubble() {
@@ -126,12 +147,100 @@ function drawGrid() {
         }
     }
 }
+
+
+function checkCollision() {
+
+    for (let row = 0; row < ROWS; row++) {
+
+        for (let col = 0; col < COLS; col++) {
+
+            const bubble = bubbleGrid[row][col];
+            if (!bubble) continue;
+
+            const distance = Math.hypot(
+                currentBubble.x - bubble.x,
+                currentBubble.y - bubble.y
+            );
+
+            if (distance < currentBubble.radius + bubble.radius) {
+
+                currentBubble.moving = false;
+
+                bubbleGrid[row][col] = {
+                    x: col * SIZE + SIZE / 2,
+                    y: row * SIZE + SIZE / 2,
+                    radius: 16,
+                    color: currentBubble.color
+                };
+
+            function checkMatch(row, col) {
+            function checkMatch(row, col) {
+
+    let color = bubbleGrid[row][col].color;
+    let matched = [];
+
+    function findBubble(r, c) {
+
+        if (r < 0 || r >= ROWS || c < 0 || c >= COLS) return;
+
+        let bubble = bubbleGrid[r][c];
+
+        if (!bubble) return;
+
+        if (bubble.color !== color) return;
+
+        if (matched.includes(bubble)) return;
+
+        matched.push(bubble);
+
+        findBubble(r + 1, c);
+        findBubble(r - 1, c);
+        findBubble(r, c + 1);
+        findBubble(r, c - 1);
+    }
+
+    findBubble(row, col);
+
+    if (matched.length >= 3) {
+
+        for (let bubble of matched) {
+
+            for (let r = 0; r < ROWS; r++) {
+
+                for (let c = 0; c < COLS; c++) {
+
+                    if (bubbleGrid[r][c] === bubble) {
+                        bubbleGrid[r][c] = null;
+                    }
+
+                }
+            }
+        }
+
+        score += matched.length * 10;
+        updateUI();
+    }
+            }
+            }
+                
+                currentBubble = createBubble();
+
+                return;
+            }
+        }
+    }
 }
+
+
+
+
 function updateBubble() {
     if (!currentBubble.moving) return;
 
     currentBubble.x += currentBubble.dx;
     currentBubble.y += currentBubble.dy;
+    
     checkCollision();
 
     // Left & Right Wall Bounce
@@ -147,6 +256,31 @@ function updateBubble() {
         currentBubble = createBubble();
     }
 }
+canvas.addEventListener("mousemove", (e) => {
+
+    const rect = canvas.getBoundingClientRect();
+
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+
+    aimAngle = Math.atan2(
+        mouseY - shooter.y,
+        mouseX - shooter.x
+        canvas.addEventListener("touchmove", (e) => {
+
+    const rect = canvas.getBoundingClientRect();
+
+    const touch = e.touches[0];
+
+    const touchX = touch.clientX - rect.left;
+    const touchY = touch.clientY - rect.top;
+
+    aimAngle = Math.atan2(
+        touchY - shooter.y,
+        touchX - shooter.x  
+    );
+
+});
 canvas.addEventListener("click", (e) => {
     if (currentBubble.moving) return;
 
@@ -166,3 +300,8 @@ canvas.addEventListener("click", (e) => {
     currentBubble.dy = Math.sin(angle) * speed;
     currentBubble.moving = true;
 });
+
+
+updateUI();
+createGrid();
+gameLoop();
