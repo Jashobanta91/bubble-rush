@@ -1,1 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bubble Rush</title>
 
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div id="menu">
+    <img src="assets/images/logo.png" id="logo">
+    <button onclick="startGame()">PLAY</button>
+</div>
+
+<div id="game">
+
+    <div id="topBar">
+        <span>Score: <span id="score">0</span></span>
+        <span>Level: <span id="level">1</span></span>
+        <span>High Score: <span id="highScore">0</span></span>
+    </div>
+
+    <canvas id="gameCanvas" width="480" height="700"></canvas>
+
+    <button onclick="restartGame()">Restart</button>
+
+</div>
+
+<audio id="bgMusic" src="assets/sounds/bgmusic.mp3" loop></audio>
+<audio id="shootSound" src="assets/sounds/shoot.mp3"></audio>
+<audio id="popSound" src="assets/sounds/pop.mp3"></audio>
+<audio id="winSound" src="assets/sounds/win.mp3"></audio>
+
+<script src="script.js"></script>
+
+</body>
+</html>
