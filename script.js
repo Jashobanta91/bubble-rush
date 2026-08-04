@@ -35,6 +35,7 @@ function drawShooter() {
 
 function gameLoop() {
     drawBackground();
+    updateBubble();
     drawBubble(currentBubble);
     drawShooter();
     requestAnimationFrame(gameLoop);
@@ -81,3 +82,41 @@ function drawBubble(bubble) {
     ctx.stroke();
     ctx.closePath();
 }
+function updateBubble() {
+    if (!currentBubble.moving) return;
+
+    currentBubble.x += currentBubble.dx;
+    currentBubble.y += currentBubble.dy;
+
+    // Left & Right Wall Bounce
+    if (
+        currentBubble.x <= currentBubble.radius ||
+        currentBubble.x >= canvas.width - currentBubble.radius
+    ) {
+        currentBubble.dx *= -1;
+    }
+
+    // Top Hit
+    if (currentBubble.y <= currentBubble.radius) {
+        currentBubble = createBubble();
+    }
+}
+canvas.addEventListener("click", (e) => {
+    if (currentBubble.moving) return;
+
+    const rect = canvas.getBoundingClientRect();
+
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+
+    const angle = Math.atan2(
+        mouseY - shooter.y,
+        mouseX - shooter.x
+    );
+
+    const speed = 8;
+
+    currentBubble.dx = Math.cos(angle) * speed;
+    currentBubble.dy = Math.sin(angle) * speed;
+    currentBubble.moving = true;
+});
