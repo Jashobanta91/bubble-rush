@@ -37,6 +37,7 @@ function drawGame(){
     ctx.fillStyle="#87CEEB";
     ctx.fillRect(0,0,canvas.width,canvas.height);
     drawBubbles();
+    drawShooter();
     requestAnimationFrame(drawGame);
 }
 // ===== Bubble System =====
@@ -101,3 +102,36 @@ function drawBubbles() {
     });
 
 }
+// ===== Shooter =====
+
+let shooter = {
+    x: canvas.width / 2,
+    y: canvas.height - 40,
+    angle: -90
+};
+
+function drawShooter() {
+    ctx.save();
+
+    ctx.translate(shooter.x, shooter.y);
+    ctx.rotate(shooter.angle * Math.PI / 180);
+
+    ctx.fillStyle = "#333";
+    ctx.fillRect(-6, -35, 12, 35);
+
+    ctx.restore();
+
+    ctx.beginPath();
+    ctx.arc(shooter.x, shooter.y, 15, 0, Math.PI * 2);
+    ctx.fillStyle = "#666";
+    ctx.fill();
+}
+
+canvas.addEventListener("mousemove", function(e) {
+    let rect = canvas.getBoundingClientRect();
+
+    let mx = e.clientX - rect.left;
+    let my = e.clientY - rect.top;
+
+    shooter.angle = Math.atan2(my - shooter.y, mx - shooter.x) + Math.PI / 2;
+});
