@@ -28,9 +28,10 @@ function drawBackground() {
 function drawShooter() {
     ctx.beginPath();
     ctx.arc(shooter.x, shooter.y, shooter.radius, 0, Math.PI * 2);
-    ctx.fillStyle = shooter.color;
+    ctx.fillStyle = nextBubble.color
     ctx.fill();
-    ctx.closePath();
+    ctx.strokeStyle = "#ffffff";
+    ctx.stroke();
 }
 
 
@@ -58,6 +59,7 @@ function gameLoop() {
     updateBubble();
     drawBubble(currentBubble);
     drawShooter();
+    drawNextBubble();
     requestAnimationFrame(gameLoop);
 }
 
@@ -87,6 +89,7 @@ const SIZE = 32;
 const bubbleGrid = [];
     
 let currentBubble = createBubble();
+let nextBubble = createBubble();
 
 function createBubble() {
     return {
@@ -266,6 +269,9 @@ canvas.addEventListener("mousemove", (e) => {
     aimAngle = Math.atan2(
         mouseY - shooter.y,
         mouseX - shooter.x
+        );
+
+        });
         canvas.addEventListener("touchmove", (e) => {
 
     const rect = canvas.getBoundingClientRect();
@@ -280,25 +286,18 @@ canvas.addEventListener("mousemove", (e) => {
         touchX - shooter.x  
     );
 
-});
-canvas.addEventListener("click", (e) => {
+    });
+canvas.addEventListener("click", (e)               
+=> {
     if (currentBubble.moving) return;
-
-    const rect = canvas.getBoundingClientRect();
-
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-
-    const angle = Math.atan2(
-        mouseY - shooter.y,
-        mouseX - shooter.x
-    );
-
+    
     const speed = 8;
 
-    currentBubble.dx = Math.cos(angle) * speed;
-    currentBubble.dy = Math.sin(angle) * speed;
+    currentBubble.dx = Math.cos(aimangle) * speed;
+    currentBubble.dy = Math.sin(aimangle) * speed;
+    
     currentBubble.moving = true;
+    
 });
 
 
