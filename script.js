@@ -35,6 +35,7 @@ function drawShooter() {
 
 function gameLoop() {
     drawBackground();
+    drawBubble(currentBubble);
     drawShooter();
     requestAnimationFrame(gameLoop);
 }
@@ -47,3 +48,36 @@ restartBtn.addEventListener("click", () => {
 
 updateUI();
 gameLoop();
+const colors = [
+    "#ff3b30",
+    "#34c759",
+    "#007aff",
+    "#ffcc00",
+    "#af52de",
+    "#ff9500"
+];
+
+let currentBubble = createBubble();
+
+function createBubble() {
+    return {
+        x: shooter.x,
+        y: shooter.y,
+        radius: 16,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        dx: 0,
+        dy: 0,
+        moving: false
+    };
+}
+
+function drawBubble(bubble) {
+    ctx.beginPath();
+    ctx.arc(bubble.x, bubble.y, bubble.radius, 0, Math.PI * 2);
+    ctx.fillStyle = bubble.color;
+    ctx.fill();
+    ctx.strokeStyle = "#ffffff";
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.closePath();
+}
