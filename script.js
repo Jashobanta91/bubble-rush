@@ -135,6 +135,7 @@ canvas.addEventListener("mousemove", function(e) {
 
     shooter.angle = Math.atan2(my - shooter.y, mx - shooter.x) + Math.PI / 2;
 });
+
 let shooter = {
     x: canvas.width / 2,
     y: canvas.height - 40,
@@ -154,3 +155,4 @@ function drawShooter() {
     ctx.stroke();
     ctx.closePath();
 }
+
