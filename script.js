@@ -135,3 +135,22 @@ canvas.addEventListener("mousemove", function(e) {
 
     shooter.angle = Math.atan2(my - shooter.y, mx - shooter.x) + Math.PI / 2;
 });
+let shooter = {
+    x: canvas.width / 2,
+    y: canvas.height - 40,
+    radius: 20,
+    color: colors[Math.floor(Math.random() * colors.length)]
+};
+
+let currentBubble = null;
+
+function drawShooter() {
+    ctx.beginPath();
+    ctx.arc(shooter.x, shooter.y, shooter.radius, 0, Math.PI * 2);
+    ctx.fillStyle = shooter.color;
+    ctx.fill();
+    ctx.strokeStyle = "#ffffff";
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.closePath();
+}
