@@ -298,9 +298,9 @@ canvas.addEventListener("click", (e)
     
     currentBubble.moving = true;
     
-});
+    });
 
 
-updateUI();
-createGrid();
-gameLoop();
+    updateUI();
+    createGrid();
+    gameLoop();
