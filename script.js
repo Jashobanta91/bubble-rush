@@ -35,6 +35,7 @@ function drawShooter() {
 
 function gameLoop() {
     drawBackground();
+    drawGrid();
     updateBubble();
     drawBubble(currentBubble);
     drawShooter();
@@ -48,8 +49,14 @@ restartBtn.addEventListener("click", () => {
 });
 
 updateUI();
+createGrid();
 gameLoop();
 const colors = [
+const ROWS = 6;
+const COLS = 8;
+const SIZE = 32;
+
+const bubbleGrid = [];
     "#ff3b30",
     "#34c759",
     "#007aff",
@@ -81,6 +88,43 @@ function drawBubble(bubble) {
     ctx.lineWidth = 2;
     ctx.stroke();
     ctx.closePath();
+    function createGrid() {
+
+    bubbleGrid.length = 0;
+
+    for (let row = 0; row < ROWS; row++) {
+
+        bubbleGrid[row] = [];
+
+        for (let col = 0; col < COLS; col++) {
+
+            bubbleGrid[row][col] = {
+                x: col * SIZE + SIZE / 2,
+                y: row * SIZE + SIZE / 2,
+                radius: 16,
+                color: colors[Math.floor(Math.random() * colors.length)]
+            };
+        }
+    }
+}
+
+function drawGrid() {
+
+    for (let row = 0; row < ROWS; row++) {
+
+        for (let col = 0; col < COLS; col++) {
+
+            const bubble = bubbleGrid[row][col];
+
+            ctx.beginPath();
+            ctx.arc(bubble.x, bubble.y, bubble.radius, 0, Math.PI * 2);
+            ctx.fillStyle = bubble.color;
+            ctx.fill();
+            ctx.strokeStyle = "#ffffff";
+            ctx.stroke();
+        }
+    }
+}
 }
 function updateBubble() {
     if (!currentBubble.moving) return;
