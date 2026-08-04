@@ -29,13 +29,75 @@ function restartGame(){
 
 function initGame(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
-
+    loadLevel();
     drawGame();
 }
 
 function drawGame(){
     ctx.fillStyle="#87CEEB";
     ctx.fillRect(0,0,canvas.width,canvas.height);
-
+    drawBubbles();
     requestAnimationFrame(drawGame);
+}
+// ===== Bubble System =====
+
+const colors = ["red", "blue", "green", "yellow", "purple"];
+
+let bubbles = [];
+
+function createBubble(x, y, color) {
+    return {
+        x: x,
+        y: y,
+        radius: 20,
+        color: color
+    };
+}
+
+function loadLevel() {
+
+    bubbles = [];
+
+    for (let row = 0; row < 8; row++) {
+
+        for (let col = 0; col < 10; col++) {
+
+            bubbles.push(
+                createBubble(
+                    40 + col * 40,
+                    40 + row * 40,
+                    colors[Math.floor(Math.random() * colors.length)]
+                )
+            );
+
+        }
+
+    }
+
+}
+
+function drawBubbles() {
+
+    bubbles.forEach(bubble => {
+
+        ctx.beginPath();
+        ctx.arc(
+            bubble.x,
+            bubble.y,
+            bubble.radius,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fillStyle = bubble.color;
+        ctx.fill();
+
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = "#ffffff";
+        ctx.stroke();
+
+        ctx.closePath();
+
+    });
+
 }
