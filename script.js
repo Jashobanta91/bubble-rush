@@ -88,6 +88,7 @@ function drawBubble(bubble) {
     ctx.lineWidth = 2;
     ctx.stroke();
     ctx.closePath();
+}
     function createGrid() {
 
     bubbleGrid.length = 0;
@@ -131,6 +132,7 @@ function updateBubble() {
 
     currentBubble.x += currentBubble.dx;
     currentBubble.y += currentBubble.dy;
+    checkCollision();
 
     // Left & Right Wall Bounce
     if (
