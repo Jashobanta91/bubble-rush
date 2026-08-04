@@ -155,4 +155,42 @@ function drawShooter() {
     ctx.stroke();
     ctx.closePath();
 }
+function checkWin() {
+    if (bubbles.length === 0) {
+        level++;
 
+        document.getElementById("level").innerText = level;
+
+        loadLevel();
+
+        if (document.getElementById("winSound")) {
+            document.getElementById("winSound").play();
+        }
+    }
+}
+function checkCollision() {
+    if (!currentBubble) return;
+
+    for (let i = 0; i < bubbles.length; i++) {
+        let b = bubbles[i];
+
+        let dx = currentBubble.x - b.x;
+        let dy = currentBubble.y - b.y;
+        let distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < currentBubble.radius + b.radius) {
+
+            if (currentBubble.color === b.color) {
+                bubbles.splice(i, 1);
+
+                checkWin();
+
+                score += 10;
+                document.getElementById("score").innerText = score;
+            }
+
+            currentBubble = null;
+            return;
+        }
+    }
+}
