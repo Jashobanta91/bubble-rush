@@ -1,8 +1,10 @@
 const canvas = document.getElementById("gameCanvas");
-const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
-const scoreEl = document.getElementById("score");
+canvas.width = 400;
+canvas.height = 700;
+
+scoreEl = document.getElementById("score");
 const levelEl = document.getElementById("level");
 const restartBtn = document.getElementById("restartBtn");
 
