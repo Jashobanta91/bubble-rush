@@ -156,7 +156,7 @@ function checkCollision() {
 
     for (let row = 0; row < ROWS; row++) {
 
-        for (let col = 0; col < COLS; col++) {
+     for (let col = 0; col < COLS; col++) {
 
             const bubble = bubbleGrid[row][col];
             if (!bubble) continue;
@@ -177,9 +177,21 @@ function checkCollision() {
                     color: currentBubble.color
                 };
 
-            function checkMatch(row, col) {
-            function checkMatch(row, col) {
+     checkMatch(row, col) ;
+     currentBubble = createBubble();
+     return;
+    }
+         
+    function checkMatch(row, col) {
+    let color = bubbleGrid[row][col].color;
+    let matched = [];
 
+    function findBubble(r, c) {
+        ...
+    }
+
+    ...
+}
     let color = bubbleGrid[row][col].color;
     let matched = [];
 
@@ -188,9 +200,7 @@ function checkCollision() {
         if (r < 0 || r >= ROWS || c < 0 || c >= COLS) return;
 
         let bubble = bubbleGrid[r][c];
-
         if (!bubble) return;
-
         if (bubble.color !== color) return;
 
         if (matched.includes(bubble)) return;
@@ -206,26 +216,18 @@ function checkCollision() {
     findBubble(row, col);
 
     if (matched.length >= 3) {
-
-        for (let bubble of matched) {
-
-            for (let r = 0; r < ROWS; r++) {
-
-                for (let c = 0; c < COLS; c++) {
-
-                    if (bubbleGrid[r][c] === bubble) {
-                        bubbleGrid[r][c] = null;
-                    }
-
-                }
-            }
-        }
-
-        score += matched.length * 10;
-        updateUI();
+        
+        matched.forEach(bubble => {
+            bubbleGrid[bubble.row][bubble.col] = null;
+        });
+         score += matched.length * 10;
+        drawScore();
+        dropFloatingBubbles();
     }
-            }
-            }
+     }
+
+        
+    }
                 
                 currentBubble = createBubble();
 
@@ -291,7 +293,7 @@ canvas.addEventListener("click", (e)
 => {
     if (currentBubble.moving) return;
     
-    const speed = 0;
+    const speed = 8;
 
     currentBubble.dx = Math.cos(aimAngle) * speed;
     currentBubble.dy = Math.sin(aimAngle) * speed;
@@ -304,3 +306,41 @@ canvas.addEventListener("click", (e)
     updateUI();
     createGrid();
     gameLoop();
+function dropFloatingBubbles() {
+
+    for (let c = 0; c < COLS; c++) {
+
+        for (let r = ROWS - 1; r > 0; r--) {
+
+            if (bubbleGrid[r][c] === null) {
+
+                for (let above = r - 1; above >= 0; above--) {
+
+                    if (bubbleGrid[above][c]) {
+
+                        bubbleGrid[r][c] = bubbleGrid[above][c];
+                        bubbleGrid[above][c] = null;
+
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    draw();
+}
+// line 332 tak tumhara purana code
+
+
+function placeBubble(row, col) {
+
+    bubbleGrid[row][col] = currentBubble;
+
+    currentBubble.row = row;
+    currentBubble.col = col;
+
+    checkMatch(row, col);
+
+    currentBubble = createBubble();
+}
