@@ -54,7 +54,15 @@ function drawAimLine() {
     ctx.lineWidth = 2;
     ctx.stroke();
 }
+function startGame() {
+    document.getElementById("menu").style.display = "none";
+    document.getElementById("game").style.display = "block";
+    gameLoop();
+}
 
+function restartGame() {
+    location.reload();
+}
 
 function gameLoop() {
     drawBackground();
