@@ -31,7 +31,7 @@ function drawBackground() {
 function drawShooter() {
     ctx.beginPath();
     ctx.arc(shooter.x, shooter.y, shooter.radius, 0, Math.PI * 2);
-    ctx.fillStyle = nextBubble.color
+    ctx.fillStyle = currentBubble.color
     ctx.fill();
     ctx.strokeStyle = "#ffffff";
     ctx.stroke();
@@ -82,9 +82,6 @@ restartBtn.addEventListener("click", () => {
     updateUI();
 });
 
-updateUI();
-createGrid();
-gameLoop();
 const colors = [
     "#ff3b30",
     "#34c759",
@@ -314,9 +311,6 @@ canvas.addEventListener("click", (e)
     });
 
 
-    updateUI();
-    createGrid();
-    gameLoop();
 function dropFloatingBubbles() {
 
     for (let c = 0; c < COLS; c++) {
@@ -355,3 +349,7 @@ function placeBubble(row, col) {
 
     currentBubble = createBubble();
 }
+
+    updateUI();
+    createGrid();
+    gameLoop();
