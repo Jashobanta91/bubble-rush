@@ -291,10 +291,10 @@ canvas.addEventListener("click", (e)
 => {
     if (currentBubble.moving) return;
     
-    const speed = 8;
+    const speed = 0;
 
-    currentBubble.dx = Math.cos(aimangle) * speed;
-    currentBubble.dy = Math.sin(aimangle) * speed;
+    currentBubble.dx = Math.cos(aimAngle) * speed;
+    currentBubble.dy = Math.sin(aimAngle) * speed;
     
     currentBubble.moving = true;
     
